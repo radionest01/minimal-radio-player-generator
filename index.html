@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Radio Nest Minimal Player Generator</title>
+<title>Radio Nest Player Generator</title>
 
 <style>
 body {
     margin: 0;
     padding: 40px;
-    background: #ffffff;
+    background: #f5f5f5;
     font-family: Arial, sans-serif;
     color: #000;
     max-width: 1000px;
@@ -19,34 +19,26 @@ body {
 h1 {
     text-align: center;
     margin-bottom: 30px;
-    font-size: 30px;
-    font-weight: 700;
+    font-size: 32px;
+    font-weight: 800;
 }
 
-/* DESKTOP: side-by-side */
+/* Layout */
 .container {
     display: flex;
     flex-direction: row;
     gap: 30px;
 }
 
-/* MOBILE: force stacked layout, override Elementor */
 @media (max-width: 900px) {
     .container {
         display: block !important;
         flex-direction: column !important;
         width: 100% !important;
     }
-
     .card {
-        display: block !important;
         width: 100% !important;
         margin-bottom: 20px !important;
-        float: none !important;
-    }
-
-    .container > * {
-        width: 100% !important;
     }
 }
 
@@ -58,15 +50,16 @@ h1 {
     box-shadow: 0 0 14px rgba(0,0,0,0.12);
     border: 2px solid #000;
     box-sizing: border-box;
-    width: 100%;
 }
 
+/* Labels */
 label {
     display: block;
     margin-top: 15px;
     font-weight: bold;
 }
 
+/* Inputs */
 input, select {
     width: 100%;
     padding: 10px;
@@ -75,6 +68,58 @@ input, select {
     border: 1px solid #ccc;
 }
 
+/* Visual Theme Selector */
+.theme-selector {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.theme-option {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    transition: 0.2s;
+    font-size: 14px;
+    background: #fafafa;
+}
+
+.theme-option:hover {
+    border-color: #0078ff;
+}
+
+.theme-option.selected {
+    border-color: #0078ff;
+    background: #e7f1ff;
+}
+
+/* Mode selector */
+.mode-select {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.mode-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid #ccc;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.mode-btn.selected {
+    border-color: #0078ff;
+    background: #e7f1ff;
+}
+
+/* Button */
 button {
     margin-top: 20px;
     padding: 12px 20px;
@@ -91,6 +136,7 @@ button:hover {
     background: #005fcc;
 }
 
+/* Textarea */
 textarea {
     width: 100%;
     height: 120px;
@@ -102,6 +148,7 @@ textarea {
     resize: none;
 }
 
+/* Preview */
 .preview-box {
     margin-top: 20px;
     padding: 20px;
@@ -110,34 +157,51 @@ textarea {
     border: 2px solid #000;
     box-shadow: 0 0 14px rgba(0,0,0,0.12);
 }
+
+.copy-btn {
+    margin-top: 10px;
+    padding: 8px 14px;
+    background: #333;
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 120px;
+}
 </style>
 </head>
 
 <body>
 
-<h1>Radio Nest Minimal Player Generator</h1>
+<h1>Radio Nest Player Generator</h1>
 
 <div class="container">
 
-    <!-- FORM CARD -->
+    <!-- FORM -->
     <div class="card">
+
         <label>Station Name</label>
         <input type="text" id="stationName" placeholder="My Radio">
 
         <label>Stream URL</label>
-        <input type="text" id="streamUrl" placeholder="https://example.com/stream or https://example.com/stream.mp3">
+        <input type="text" id="streamUrl" placeholder="https://example.com/stream.mp3">
 
         <label>Upload Logo</label>
         <input type="file" id="logoUpload" accept="image/*">
-        <small style="display:block; margin-top:5px; color:#555;">
-            Max file size: 32 MB
-        </small>
+        <small style="display:block; margin-top:5px; color:#555;">Max file size: 32 MB</small>
 
-        <label>Theme</label>
-        <select id="theme">
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
-        </select>
+        <label>Theme Style</label>
+        <div class="theme-selector">
+            <div class="theme-option selected" data-theme="modern">🎨 Modern</div>
+            <div class="theme-option" data-theme="christmas">🎄 Christmas</div>
+            <div class="theme-option" data-theme="retro">📻 Retro</div>
+        </div>
+
+        <label>Mode</label>
+        <div class="mode-select">
+            <div class="mode-btn selected" data-mode="light">Light</div>
+            <div class="mode-btn" data-mode="dark">Dark</div>
+        </div>
 
         <label>Alignment</label>
         <select id="alignment">
@@ -146,23 +210,50 @@ textarea {
             <option value="right">Right</option>
         </select>
 
-        <button onclick="generateIframe()">Generate Iframe</button>
+        <button onclick="generateIframe()">Generate Player</button>
     </div>
 
-    <!-- OUTPUT CARD -->
+    <!-- OUTPUT -->
     <div class="card">
         <h3>Live Preview</h3>
         <div id="preview" class="preview-box">Your player preview will appear here.</div>
 
         <h3>Your Iframe Code</h3>
         <textarea id="iframeOutput" readonly></textarea>
+
+        <p style="margin-top:8px; font-size:14px; color:#444;">
+            Just add this code to an HTML block in your website editor.
+        </p>
+
+        <div class="copy-btn" onclick="copyIframe()">Copy</div>
     </div>
 
 </div>
 
 <script>
-const imgbbApiKey = "YOUR_IMGBB_API_KEY_HERE"; // <-- Replace privately
+const imgbbApiKey = "YOUR_IMGBB_API_KEY_HERE";
 
+/* THEME STYLE SELECTOR */
+let selectedTheme = "modern";
+document.querySelectorAll(".theme-option").forEach(opt => {
+    opt.addEventListener("click", () => {
+        document.querySelectorAll(".theme-option").forEach(o => o.classList.remove("selected"));
+        opt.classList.add("selected");
+        selectedTheme = opt.dataset.theme;
+    });
+});
+
+/* MODE SELECTOR */
+let selectedMode = "light";
+document.querySelectorAll(".mode-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+        document.querySelectorAll(".mode-btn").forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+        selectedMode = btn.dataset.mode;
+    });
+});
+
+/* Upload to ImgBB */
 async function uploadToImgBB(file) {
     const formData = new FormData();
     formData.append("image", file);
@@ -173,18 +264,13 @@ async function uploadToImgBB(file) {
     });
 
     const result = await response.json();
-    if (result.success) {
-        return result.data.url;
-    } else {
-        alert("Logo upload failed. Please try again.");
-        return "";
-    }
+    return result.success ? result.data.url : "";
 }
 
+/* Generate iframe */
 async function generateIframe() {
     const name = encodeURIComponent(document.getElementById("stationName").value);
     const stream = encodeURIComponent(document.getElementById("streamUrl").value);
-    const theme = document.getElementById("theme").value;
     const alignment = document.getElementById("alignment").value;
     const logoFile = document.getElementById("logoUpload").files[0];
 
@@ -194,26 +280,32 @@ async function generateIframe() {
     }
 
     let logoUrl = "";
+    if (logoFile) logoUrl = await uploadToImgBB(logoFile);
 
-    if (logoFile) {
-        logoUrl = await uploadToImgBB(logoFile);
-    }
-
-    buildIframe(name, stream, theme, alignment, logoUrl);
-}
-
-function buildIframe(name, stream, theme, alignment, logoUrl) {
     const baseUrl = "https://radionest01.github.io/minimal-radio-player/";
 
-    const src = `${baseUrl}?name=${name}&stream=${stream}&theme=${theme}&align=${alignment}${logoUrl ? `&logo=${encodeURIComponent(logoUrl)}` : ""}`;
+    const src =
+        `${baseUrl}?name=${name}` +
+        `&stream=${stream}` +
+        `&themeStyle=${selectedTheme}` +
+        `&mode=${selectedMode}` +
+        `&align=${alignment}` +
+        (logoUrl ? `&logo=${encodeURIComponent(logoUrl)}` : "");
 
     const iframe = `<iframe src="${src}" width="100%" height="200" style="border:0;"></iframe>`;
 
     document.getElementById("iframeOutput").value = iframe;
     document.getElementById("preview").innerHTML = iframe;
 }
+
+/* Copy button */
+function copyIframe() {
+    const textarea = document.getElementById("iframeOutput");
+    textarea.select();
+    document.execCommand("copy");
+    alert("Iframe copied!");
+}
 </script>
 
 </body>
 </html>
-
