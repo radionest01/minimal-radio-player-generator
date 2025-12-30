@@ -23,9 +23,18 @@ h1 {
     font-weight: 700;
 }
 
+/* DESKTOP: side-by-side */
+/* MOBILE: stacked vertically */
 .container {
     display: flex;
+    flex-direction: row;
     gap: 30px;
+}
+
+@media (max-width: 900px) {
+    .container {
+        flex-direction: column;
+    }
 }
 
 .card {
@@ -36,6 +45,7 @@ h1 {
     box-shadow: 0 0 14px rgba(0,0,0,0.12);
     border: 2px solid #000;
     box-sizing: border-box;
+    width: 100%;
 }
 
 label {
@@ -104,11 +114,11 @@ textarea {
         <label>Stream URL</label>
         <input type="text" id="streamUrl" placeholder="https://example.com/stream or https://example.com/stream.mp3">
 
-      <label>Upload Logo</label>
-<input type="file" id="logoUpload" accept="image/*">
-<small style="display:block; margin-top:5px; color:#555;">
-    Max file size: 32 MB
-</small>
+        <label>Upload Logo</label>
+        <input type="file" id="logoUpload" accept="image/*">
+        <small style="display:block; margin-top:5px; color:#555;">
+            Max file size: 32 MB (ImgBB limit)
+        </small>
 
         <label>Theme</label>
         <select id="theme">
@@ -128,17 +138,17 @@ textarea {
 
     <!-- OUTPUT CARD -->
     <div class="card">
-        <h3>Your Iframe Code</h3>
-        <textarea id="iframeOutput" readonly></textarea>
-
         <h3>Live Preview</h3>
         <div id="preview" class="preview-box">Your player preview will appear here.</div>
+
+        <h3>Your Iframe Code</h3>
+        <textarea id="iframeOutput" readonly></textarea>
     </div>
 
 </div>
 
 <script>
-const imgbbApiKey = "6df580fe2b2f0d73bcfc1b3301d57615"; // <-- Replace privately
+const imgbbApiKey = "YOUR_IMGBB_API_KEY_HERE"; // <-- Replace privately
 
 async function uploadToImgBB(file) {
     const formData = new FormData();
@@ -193,4 +203,3 @@ function buildIframe(name, stream, theme, alignment, logoUrl) {
 
 </body>
 </html>
-
