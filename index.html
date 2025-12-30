@@ -24,16 +24,29 @@ h1 {
 }
 
 /* DESKTOP: side-by-side */
-/* MOBILE: stacked vertically */
 .container {
     display: flex;
     flex-direction: row;
     gap: 30px;
 }
 
+/* MOBILE: force stacked layout, override Elementor */
 @media (max-width: 900px) {
     .container {
-        flex-direction: column;
+        display: block !important;
+        flex-direction: column !important;
+        width: 100% !important;
+    }
+
+    .card {
+        display: block !important;
+        width: 100% !important;
+        margin-bottom: 20px !important;
+        float: none !important;
+    }
+
+    .container > * {
+        width: 100% !important;
     }
 }
 
