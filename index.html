@@ -211,6 +211,12 @@ textarea {
             <option value="right">Right</option>
         </select>
 
+        <!-- NEW: Hide Volume Slider Checkbox -->
+        <label>
+            <input type="checkbox" id="hideVolumeCheckbox">
+            Hide Volume Slider
+        </label>
+
         <button onclick="generateIframe()">Generate Player</button>
     </div>
 
@@ -268,6 +274,7 @@ async function generateIframe() {
     const name = encodeURIComponent(document.getElementById("stationName").value);
     const stream = encodeURIComponent(document.getElementById("streamUrl").value);
     const alignment = document.getElementById("alignment").value;
+    const hideVolume = document.getElementById("hideVolumeCheckbox").checked; // NEW
     const logoFile = document.getElementById("logoUpload").files[0];
 
     if (!name || !stream) {
@@ -286,7 +293,8 @@ async function generateIframe() {
         `&themeStyle=${selectedTheme}` +
         `&mode=${selectedMode}` +
         `&align=${alignment}` +
-        (logoUrl ? `&logo=${encodeURIComponent(logoUrl)}` : "");
+        (logoUrl ? `&logo=${encodeURIComponent(logoUrl)}` : "") +
+        (hideVolume ? `&hideVolume=true` : ""); // NEW
 
     const iframe = `<iframe src="${src}" width="100%" height="300" style="border:0;"></iframe>`;
 
